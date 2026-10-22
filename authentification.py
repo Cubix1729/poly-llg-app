@@ -145,10 +145,7 @@ def formulaire_auth(local_storage):
                 try:
                     resultat = client.auth.sign_up({
                         "email": email_inscription,
-                        "password": mot_passe_inscription,
-                        "options": {
-                        "emailRedirectTo": "https://poly-llg.streamlit.app/",
-                        },
+                        "password": mot_passe_inscription
                     })
 
                     if resultat.session is None:
