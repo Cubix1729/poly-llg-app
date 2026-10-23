@@ -181,11 +181,12 @@ with st.sidebar:
                 page_auth()
                 st.rerun()
 
-    st.divider()
+    if any(statut_exo(e) == "À revoir" for e in exercices):
+        st.divider()
 
-    if st.button("📖 Exercices à revoir", width="stretch"):
-        page_revisions()
-        st.rerun()
+        if st.button("📖 Exercices à revoir", width="stretch"):
+            page_revisions()
+            st.rerun()
 
     st.divider()
 
@@ -273,8 +274,11 @@ elif st.session_state.page == "revisions":
     revisions_exos = [
         e for e in exercices if statut_exo(e) == "À revoir"
     ]
+    nb_revisions = len(revisions_exos)
 
-    st.header(f"{len(revisions_exos)} exercices à revoir")
+    st.header(
+        f"{nb_revisions} exercice{"s" if nb_revisions > 1 else ""} à revoir"
+    )
 
     for exo in revisions_exos:
         with st.container(border=True, width="stretch"):
