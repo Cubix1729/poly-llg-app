@@ -134,6 +134,11 @@ def page_auth():
     st.session_state.partie_select = None
     st.session_state.sous_partie_select = None
 
+def page_revisions():
+    st.session_state.page = "revisions"
+    st.session_state.partie_select = None
+    st.session_state.sous_partie_select = None
+
 def statut_exo(exercice):
     return st.session_state.statuts_exos.get(exercice["numero"], "À faire")
 
@@ -172,9 +177,15 @@ with st.sidebar:
                 st.rerun()
 
         else:
-            if st.button("Connexion", type="primary"):
+            if st.button("👤 Connexion", type="primary"):
                 page_auth()
                 st.rerun()
+
+    st.divider()
+
+    if st.button("📖 Exercices à revoir", width="stretch"):
+        page_revisions()
+        st.rerun()
 
     st.divider()
 
@@ -257,6 +268,38 @@ if st.session_state.page == "accueil":
         "Vous êtes invités à vous référer au document original.",
         icon="⚠️"
     )
+
+elif st.session_state.page == "revisions":
+    revisions_exos = [
+        e for e in exercices if statut_exo(e) == "À revoir"
+    ]
+
+    st.header(f"{len(revisions_exos)} exercices à revoir")
+
+    for exo in revisions_exos:
+        with st.container(border=True, width="stretch"):
+            col_titre, col_statut = st.columns([4, 1])
+            with col_titre:
+                st.markdown(f"#### Exercice {exo["numero"]} ({"★" * exo["difficulte"]})")
+                st.write(f"De **{exo["sous_reference"]["numero"]} : {exo["sous_reference"]["titre"]}**")
+                if exo["titre"] is not None:
+                    st.caption(
+                        f"**{exo["titre"]}{" (∗)" if exo["is_classique"] else ""}**"
+                    )
+            with col_statut:
+                statut = st.radio(
+                    "Statut",
+                    STATUTS,
+                    index=STATUTS.index(statut_exo(exo)),
+                    key=f"statut_exo_{exo["numero"]}",
+                    on_change=mettre_a_jour_statut,
+                    args=(exo["numero"],),
+                    label_visibility="collapsed",
+                )
+            st.markdown(exo["enonce_md"])
+            with st.expander("Corrigé", expanded=False):
+                st.markdown(exo["corrige_md"])
+                st.caption(f"Par {exo["auteur_corrige"]}")
 
 elif st.session_state.page == "chapitre":
     chapitre = st.session_state.partie_select
