@@ -149,7 +149,7 @@ def formulaire_auth(local_storage):
                     })
 
                     if resultat.session is None:
-                        st.success("Compte créé ! Vérifiez vos e-mails pour confirmer votre compte si nécessaire.")
+                        st.success("Compte créé ! Vérifiez vos e-mails pour confirmer votre compte.")
                     else:
                         st.session_state.utilisateur_id = resultat.user.id
                         st.session_state.email_utilisateur = resultat.user.email
@@ -170,6 +170,6 @@ def formulaire_auth(local_storage):
 
                         st.rerun()
                 except Exception:
-                    st.error("Impossible de créer le compte. Vérifiez vos e-mails si nécessaire.")
+                    st.error("Impossible de créer le compte.")
 
     return None
