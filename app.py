@@ -288,7 +288,7 @@ elif st.session_state.page == "revisions":
                 st.write(f"De **{exo["sous_reference"]["numero"]} : {exo["sous_reference"]["titre"]}**")
                 if exo["titre"] is not None:
                     st.caption(
-                        f"**{exo["titre"]}{" (∗)" if exo["is_classique"] else ""}**"
+                        f"**{exo["titre"]}{" (classique)" if exo["is_classique"] else ""}**"
                     )
             with col_statut:
                 statut = st.radio(
@@ -355,7 +355,7 @@ elif st.session_state.page == "sous_partie":
                 st.markdown(f"#### Exercice {exercice["numero"]} ({"★" * exercice["difficulte"]})")
                 if exercice["titre"] is not None:
                     st.caption(
-                        f"**{exercice["titre"]}{" (∗)" if exercice["is_classique"] else ""}** - [Source]({url_enonce})"
+                        f"**{exercice["titre"]}{" (classique)" if exercice["is_classique"] else ""}** - [Source]({url_enonce})"
                     )
                 else:
                     st.caption(f"[Source]({url_enonce})")
